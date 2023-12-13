@@ -1,0 +1,34 @@
+package main
+
+import (
+	"fmt"
+	"log"
+
+	authz "github.com/CHESSComputing/common/authz"
+	srvConfig "github.com/CHESSComputing/common/config"
+	"github.com/gin-gonic/gin"
+)
+
+func setupRouter() *gin.Engine {
+	// Disable Console Color
+	// gin.DisableConsoleColor()
+	r := gin.Default()
+
+	// GET routes
+	// all POST methods ahould be authorized
+	authorized := r.Group("/")
+	authorized.Use(authz.TokenMiddleware(srvConfig.Config.Authz.ClientId, srvConfig.Config.MetaData.Verbose))
+	{
+		authorized.GET("/", DataHandler)
+	}
+
+	return r
+}
+
+func Server() {
+	// setup web router and start the service
+	r := setupRouter()
+	sport := fmt.Sprintf(":%d", srvConfig.Config.MetaData.WebServer.Port)
+	log.Printf("Start HTTP server %s", sport)
+	r.Run(sport)
+}
