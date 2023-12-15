@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	authz "github.com/CHESSComputing/common/authz"
-	srvConfig "github.com/CHESSComputing/common/config"
+	authz "github.com/CHESSComputing/golib/authz"
+	srvConfig "github.com/CHESSComputing/golib/config"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,7 +17,7 @@ func setupRouter() *gin.Engine {
 	// GET routes
 	// all POST methods ahould be authorized
 	authorized := r.Group("/")
-	authorized.Use(authz.TokenMiddleware(srvConfig.Config.Authz.ClientId, srvConfig.Config.MetaData.Verbose))
+	authorized.Use(authz.TokenMiddleware(srvConfig.Config.Authz.ClientID, srvConfig.Config.MetaData.Verbose))
 	{
 		authorized.GET("/", DataHandler)
 	}
