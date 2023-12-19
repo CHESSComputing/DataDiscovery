@@ -21,10 +21,10 @@ func setupRouter() *gin.Engine {
 	// GET routes
 	// all POST methods ahould be authorized
 	authorized := r.Group("/")
-	authorized.Use(authz.TokenMiddleware(srvConfig.Config.Authz.ClientID, srvConfig.Config.MetaData.Verbose))
+	authorized.Use(authz.TokenMiddleware(srvConfig.Config.Authz.ClientID, srvConfig.Config.Discovery.Verbose))
 	{
 		authorized.GET("/", DataHandler)
-		authorized.GET("/search", SearchHandler)
+		authorized.POST("/search", SearchHandler)
 	}
 
 	return r
@@ -35,7 +35,7 @@ func Server() {
 	_httpReadRequest = services.NewHttpRequest("read", Verbose)
 	// setup web router and start the service
 	r := setupRouter()
-	sport := fmt.Sprintf(":%d", srvConfig.Config.MetaData.WebServer.Port)
+	sport := fmt.Sprintf(":%d", srvConfig.Config.Discovery.WebServer.Port)
 	log.Printf("Start HTTP server %s", sport)
 	r.Run(sport)
 }

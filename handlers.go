@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -28,6 +29,9 @@ func SearchHandler(c *gin.Context) {
 		return
 	}
 
+	// to proceed obtain valid token
+	_httpReadRequest.GetToken()
+
 	// TODO: implement logic to search across different services like
 	// MetaData, DataBookkeeping, ScanService, etc.
 	// so far we query MetaData service
@@ -38,5 +42,23 @@ func SearchHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, rec)
 		return
 	}
-	c.JSON(200, resp)
+
+	// read respnose from downstream service
+	defer resp.Body.Close()
+	data, err = io.ReadAll(resp.Body)
+	if err != nil {
+		rec := services.Response("DataDiscovery", http.StatusBadRequest, services.ReaderError, err)
+		c.JSON(http.StatusBadRequest, rec)
+		return
+	}
+
+	var rec services.ServiceStatus
+	err = json.Unmarshal(data, &rec)
+	if err != nil {
+		rec := services.Response("DataDiscovery", http.StatusBadRequest, services.UnmarshalError, err)
+		c.JSON(http.StatusBadRequest, rec)
+		return
+	}
+
+	c.JSON(200, rec)
 }
