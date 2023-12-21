@@ -52,7 +52,7 @@ func SearchHandler(c *gin.Context) {
 		return
 	}
 
-	var rec services.ServiceStatus
+	var rec services.ServiceResponse
 	err = json.Unmarshal(data, &rec)
 	if err != nil {
 		rec := services.Response("DataDiscovery", http.StatusBadRequest, services.UnmarshalError, err)
