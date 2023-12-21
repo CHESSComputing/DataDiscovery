@@ -43,6 +43,9 @@ func SearchHandler(c *gin.Context) {
 		return
 	}
 
+	// TODO: I should replace reading response body from downstream service by
+	// using reader closer
+
 	// read respnose from downstream service
 	defer resp.Body.Close()
 	data, err = io.ReadAll(resp.Body)
