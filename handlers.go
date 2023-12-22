@@ -68,8 +68,12 @@ func SearchHandler(c *gin.Context) {
 		c.JSON(200, rec)
 	*/
 
-	// TODO: content type here may be gzip or something else I need to thnk about it
-	c.Data(200, "application/json", data)
+	// extract content type from response header, if it is missing set default value
+	ctype := resp.Header.Get("Content-type")
+	if ctype == "" {
+		ctype = "application/json"
+	}
+	c.Data(200, ctype, data)
 
 	/*
 		// TODO: I should replace reading response body from downstream service by
