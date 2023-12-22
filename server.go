@@ -12,6 +12,7 @@ import (
 
 var _httpReadRequest *services.HttpRequest
 var Verbose int
+var _routes gin.RoutesInfo
 
 func setupRouter() *gin.Engine {
 	// Disable Console Color
@@ -19,6 +20,8 @@ func setupRouter() *gin.Engine {
 	r := gin.Default()
 
 	// GET routes
+	r.GET("/apis", ApisHandler)
+
 	// all POST methods ahould be authorized
 	authorized := r.Group("/")
 	authorized.Use(authz.TokenMiddleware(srvConfig.Config.Authz.ClientID, srvConfig.Config.Discovery.Verbose))
@@ -26,6 +29,7 @@ func setupRouter() *gin.Engine {
 		authorized.GET("/", DataHandler)
 		authorized.POST("/search", SearchHandler)
 	}
+	_routes = r.Routes()
 
 	return r
 }

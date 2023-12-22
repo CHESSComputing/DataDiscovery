@@ -2,15 +2,20 @@ package main
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 
 	srvConfig "github.com/CHESSComputing/golib/config"
+	server "github.com/CHESSComputing/golib/server"
 	services "github.com/CHESSComputing/golib/services"
 	"github.com/gin-gonic/gin"
 )
+
+// ApisHandler provides all server routes
+func ApisHandler(c *gin.Context) {
+	server.ApisHandler(c, _routes)
+}
 
 // DataHandler provives access to GET / end-point
 func DataHandler(c *gin.Context) {
@@ -43,9 +48,6 @@ func SearchHandler(c *gin.Context) {
 		return
 	}
 
-	// TODO: I should replace reading response body from downstream service by
-	// using reader closer
-
 	// read respnose from downstream service
 	defer resp.Body.Close()
 	data, err = io.ReadAll(resp.Body)
@@ -55,13 +57,30 @@ func SearchHandler(c *gin.Context) {
 		return
 	}
 
-	var rec services.ServiceResponse
-	err = json.Unmarshal(data, &rec)
-	if err != nil {
-		rec := services.Response("DataDiscovery", http.StatusBadRequest, services.UnmarshalError, err)
-		c.JSON(http.StatusBadRequest, rec)
-		return
-	}
+	/*
+		var rec services.ServiceResponse
+		err = json.Unmarshal(data, &rec)
+		if err != nil {
+			rec := services.Response("DataDiscovery", http.StatusBadRequest, services.UnmarshalError, err)
+			c.JSON(http.StatusBadRequest, rec)
+			return
+		}
+		c.JSON(200, rec)
+	*/
 
-	c.JSON(200, rec)
+	// TODO: content type here may be gzip or something else I need to thnk about it
+	c.Data(200, "application/json", data)
+
+	/*
+		// TODO: I should replace reading response body from downstream service by
+		// using reader closer
+
+		tee := io.TeeReader(resp.Body, c.Writer)
+		_, err = io.Copy(c.Writer, tee)
+		if err != nil {
+			rec := services.Response("DataDiscovery", http.StatusBadRequest, services.ServiceError, err)
+			c.JSON(http.StatusBadRequest, rec)
+		}
+		c.JSON(200, nil)
+	*/
 }
