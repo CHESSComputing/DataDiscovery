@@ -7,15 +7,9 @@ import (
 	"net/http"
 
 	srvConfig "github.com/CHESSComputing/golib/config"
-	server "github.com/CHESSComputing/golib/server"
 	services "github.com/CHESSComputing/golib/services"
 	"github.com/gin-gonic/gin"
 )
-
-// ApisHandler provides all server routes
-func ApisHandler(c *gin.Context) {
-	server.ApisHandler(c, _routes)
-}
 
 // DataHandler provives access to GET / end-point
 func DataHandler(c *gin.Context) {

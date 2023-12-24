@@ -4,36 +4,29 @@ import (
 	"fmt"
 	"log"
 
-	authz "github.com/CHESSComputing/golib/authz"
 	srvConfig "github.com/CHESSComputing/golib/config"
+	server "github.com/CHESSComputing/golib/server"
 	services "github.com/CHESSComputing/golib/services"
 	"github.com/gin-gonic/gin"
 )
 
 var _httpReadRequest *services.HttpRequest
 var Verbose int
-var _routes gin.RoutesInfo
 
+// helper function to setup our router
 func setupRouter() *gin.Engine {
-	// Disable Console Color
-	// gin.DisableConsoleColor()
-	r := gin.Default()
-
-	// GET routes
-	r.GET("/apis", ApisHandler)
-
-	// all POST methods ahould be authorized
-	authorized := r.Group("/")
-	authorized.Use(authz.TokenMiddleware(srvConfig.Config.Authz.ClientID, srvConfig.Config.Discovery.Verbose))
-	{
-		authorized.GET("/", DataHandler)
-		authorized.POST("/search", SearchHandler)
+	routes := []server.Route{
+		server.Route{Method: "GET", Path: "/", Handler: DataHandler, Authorized: true},
+		server.Route{Method: "POST", Path: "/search", Handler: SearchHandler, Authorized: true},
 	}
-	_routes = r.Routes()
-
+	r := server.Router(routes, nil, "static",
+		srvConfig.Config.Discovery.WebServer.Base,
+		srvConfig.Config.Discovery.WebServer.Verbose,
+	)
 	return r
 }
 
+// Server defines our HTTP server
 func Server() {
 	Verbose = srvConfig.Config.Discovery.WebServer.Verbose
 	_httpReadRequest = services.NewHttpRequest("read", Verbose)
