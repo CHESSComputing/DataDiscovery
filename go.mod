@@ -75,4 +75,3 @@ require (
 )
 
 replace github.com/CHESSComputing/golib => ../golib
-
