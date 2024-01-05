@@ -19,10 +19,7 @@ func setupRouter() *gin.Engine {
 		server.Route{Method: "GET", Path: "/", Handler: DataHandler, Authorized: true},
 		server.Route{Method: "POST", Path: "/search", Handler: SearchHandler, Authorized: true},
 	}
-	r := server.Router(routes, nil, "static",
-		srvConfig.Config.Discovery.WebServer.Base,
-		srvConfig.Config.Discovery.WebServer.Verbose,
-	)
+	r := server.Router(routes, nil, "static", srvConfig.Config.Discovery.WebServer)
 	return r
 }
 
