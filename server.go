@@ -1,5 +1,9 @@
 package main
 
+// server module
+//
+// Copyright (c) 2023 - Valentin Kuznetsov <vkuznet@gmail.com>
+//
 import (
 	"fmt"
 	"log"
