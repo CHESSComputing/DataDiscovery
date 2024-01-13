@@ -5,9 +5,6 @@ package main
 // Copyright (c) 2023 - Valentin Kuznetsov <vkuznet@gmail.com>
 //
 import (
-	"fmt"
-	"log"
-
 	srvConfig "github.com/CHESSComputing/golib/config"
 	server "github.com/CHESSComputing/golib/server"
 	services "github.com/CHESSComputing/golib/services"
@@ -31,9 +28,9 @@ func setupRouter() *gin.Engine {
 func Server() {
 	Verbose = srvConfig.Config.Discovery.WebServer.Verbose
 	_httpReadRequest = services.NewHttpRequest("read", Verbose)
+
 	// setup web router and start the service
 	r := setupRouter()
-	sport := fmt.Sprintf(":%d", srvConfig.Config.Discovery.WebServer.Port)
-	log.Printf("Start HTTP server %s", sport)
-	r.Run(sport)
+	webServer := srvConfig.Config.Discovery.WebServer
+	server.StartServer(r, webServer)
 }
