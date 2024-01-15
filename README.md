@@ -1,4 +1,9 @@
 # DataDiscovery
+
+![build status](https://github.com/CHESSComputing/DataDiscovery/actions/workflows/go.yml/badge.svg)
+[![go report card](https://goreportcard.com/badge/github.com/CHESSComputing/DataDiscovery)](https://goreportcard.com/report/github.com/CHESSComputing/DataDiscovery)
+[![godoc](https://godoc.org/github.com/CHESSComputing/DataDiscovery?status.svg)](https://godoc.org/github.com/CHESSComputing/DataDiscovery)
+
 CHESS Data Discovery service
 
 ### Example
