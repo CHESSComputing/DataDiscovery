@@ -1,6 +1,6 @@
 package main
 
-// Go implementation of Data Discoveru service
+// Go implementation of Data Discovery service
 //
 // Copyright (c) 2023 - Valentin Kuznetsov <vkuznet@gmail.com>
 //
