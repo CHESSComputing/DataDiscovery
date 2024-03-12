@@ -63,6 +63,7 @@ func SearchHandler(c *gin.Context) {
 	var nrecords int
 	err = json.Unmarshal(data, &nrecords)
 	if err != nil {
+		log.Printf("provided data: %v failed to unmarshal to int data-type\n", string(data))
 		rec := services.Response("DataDiscovery", http.StatusBadRequest, services.UnmarshalError, err)
 		c.JSON(http.StatusBadRequest, rec)
 		return
