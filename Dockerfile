@@ -19,3 +19,4 @@ COPY --from=go-builder /build/static /data/static
 LABEL org.opencontainers.image.description="FOXDEN DataDiscovery service"
 LABEL org.opencontainers.image.source=https://github.com/chesscomputing/datadiscovery
 LABEL org.opencontainers.image.licenses=MIT
+WORKDIR /data
