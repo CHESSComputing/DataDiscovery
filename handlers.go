@@ -37,6 +37,17 @@ func SearchHandler(c *gin.Context) {
 	// keep query data for multiple search requests
 	query := data
 
+	// decompose query into service ones
+	qlMap, err := _qlMgr.ServiceQueries(string(query))
+	if err != nil {
+		rec := services.Response("DataDiscovery", http.StatusBadRequest, services.QueryError, err)
+		c.JSON(http.StatusBadRequest, rec)
+		return
+	}
+	if Verbose > 0 {
+		log.Printf("QL service map %+v", qlMap)
+	}
+
 	// to proceed obtain valid token
 	_httpReadRequest.GetToken()
 
