@@ -84,7 +84,7 @@ func SearchHandler(c *gin.Context) {
 	if nrecords == 0 {
 		rec := services.ServiceResponse{
 			Service:   "MetaData",
-			Results:   &services.ServiceResults{NRecords: nrecords},
+			Results:   services.ServiceResults{NRecords: nrecords},
 			Timestamp: time.Now().String(),
 		}
 		c.JSON(200, rec)
@@ -121,7 +121,7 @@ func SearchHandler(c *gin.Context) {
 	}
 	rec := services.ServiceResponse{
 		Service:   "MetaData",
-		Results:   &services.ServiceResults{NRecords: nrecords, Records: records},
+		Results:   services.ServiceResults{NRecords: nrecords, Records: records},
 		Timestamp: time.Now().String(),
 	}
 	c.JSON(200, rec)
