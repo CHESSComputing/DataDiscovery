@@ -127,7 +127,7 @@ func SearchHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, rec)
 		return
 	}
-	// read respnose from downstream service
+	// read response from downstream service
 	defer resp.Body.Close()
 	data, err = io.ReadAll(resp.Body)
 	if err != nil {
