@@ -21,9 +21,9 @@ var Verbose int
 // helper function to setup our router
 func setupRouter() *gin.Engine {
 	routes := []server.Route{
-		server.Route{Method: "GET", Path: "/", Handler: DataHandler, Authorized: true},
-		server.Route{Method: "POST", Path: "/nrecords", Handler: NRecordsHandler, Authorized: true},
-		server.Route{Method: "POST", Path: "/search", Handler: SearchHandler, Authorized: true},
+		{Method: "GET", Path: "/", Handler: DataHandler, Authorized: true},
+		{Method: "POST", Path: "/nrecords", Handler: NRecordsHandler, Authorized: true},
+		{Method: "POST", Path: "/search", Handler: SearchHandler, Authorized: true},
 	}
 	r := server.Router(routes, nil, "static", srvConfig.Config.Discovery.WebServer)
 	return r
